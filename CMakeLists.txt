@@ -85,18 +85,23 @@ target_compile_options(csvreader PRIVATE
 )
 
 # =========================
-# Sanitizers (Debug only)
+# Debug helper
 # =========================
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+function(enable_debug target_name)
 
-    target_compile_options(csvreader PRIVATE
-        -fno-omit-frame-pointer
-    )
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
+        target_compile_options(${target_name} PRIVATE
+            -g
+            -O0
+            -fno-omit-frame-pointer
+        )
 
+    endif()
 
-endif()
+endfunction()
+
 
 # =========================
 # Output directories
@@ -118,5 +123,16 @@ message(STATUS "Compiler: ${CMAKE_C_COMPILER}")
 # =========================
 # Testing
 # =========================
+add_executable(table_test 
+    tests/table_test.c 
+    src/table.c 
+    src/error.c
+    src/evaluator.c
+)
 
+
+enable_debug(table_test)
+
+
+target_include_directories(table_test PRIVATE inc)
 enable_testing()

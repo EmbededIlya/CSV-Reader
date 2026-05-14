@@ -2,7 +2,4 @@
 #define PARSER_H
 
 
-
-
-
 #endif
