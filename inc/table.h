@@ -133,4 +133,56 @@ int table_set_cell_value(Table *table, int row, int col, const char *in_value);
  */
 void table_print_csv(const Table *table);
 
+const char* table_get_cell_formula(const Table *table, int row, int col);
+int table_set_cell_computed_value(Table *table, int row, int col, int value);
+
+/* --- Name-based Data Access API (HashMap-backed) --- */
+
+/**
+ * @brief Retrieves computed value using logical cell address (column + row id).
+ *
+ * This function resolves the cell via internal hashmap lookup.
+ *
+ * @param[in] table Pointer to Table instance.
+ * @param[in] col   Column name (e.g. "A", "B", "Cell").
+ * @param[in] row   Row index.
+ * @return int      Computed value, or 0 if not found.
+ */
+int table_get_cell_value_by_name(const Table *table, const char *col, int row);
+
+/**
+ * @brief Retrieves cell type using logical cell address.
+ *
+ * @param[in] table Pointer to Table instance.
+ * @param[in] col   Column name.
+ * @param[in] row   Row index.
+ * @return CellType Type of cell or CELL_EMPTY if not found.
+ */
+CellType table_get_cell_type_by_name(const Table *table, const char *col, int row);
+
+/**
+ * @brief Retrieves formula string using logical cell address.
+ *
+ * Returns internal pointer to formula if cell contains one.
+ *
+ * @param[in] table Pointer to Table instance.
+ * @param[in] col   Column name.
+ * @param[in] row   Row index.
+ * @return const char* Formula string or NULL.
+ */
+const char* table_get_cell_formula_by_name(const Table *table, const char *col, int row);
+
+/**
+ * @brief Updates computed value using logical cell address.
+ *
+ * Used by evaluator module after formula execution.
+ *
+ * @param[in,out] table Pointer to Table instance.
+ * @param[in] col       Column name.
+ * @param[in] row       Row index.
+ * @param[in] value     Computed integer value.
+ * @return int          1 on success, 0 on failure.
+ */
+int table_set_cell_computed_value_by_name(Table *table, const char *col, int row, int value);
+
 #endif /* TABLE_H */

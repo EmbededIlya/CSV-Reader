@@ -34,6 +34,7 @@ set(SOURCES
     src/evaluator.c
     src/parser.c
     src/table.c
+    src/hashmap.c
 )
 
 # =========================
@@ -46,6 +47,7 @@ set(HEADERS
     inc/evaluator.h
     inc/parser.h
     inc/table.h
+    inc/hashmap.h
 )
 
 # =========================
@@ -123,12 +125,16 @@ message(STATUS "Compiler: ${CMAKE_C_COMPILER}")
 # =========================
 # Testing
 # =========================
-add_executable(table_test 
-    tests/table_test.c 
-    src/table.c 
-    src/error.c
+add_executable(table_test
+    src/table.c
+    src/parser.c
     src/evaluator.c
+    src/error.c
+    src/hashmap.c
+    tests/table_test.c
+
 )
+
 add_executable(parser_test 
     tests/parser_test.c 
     src/parser.c 
@@ -136,6 +142,7 @@ add_executable(parser_test
 )
 target_include_directories(parser_test PRIVATE inc)
 target_include_directories(table_test PRIVATE inc)
+
 
 
 enable_debug(table_test)
